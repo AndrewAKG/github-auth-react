@@ -1,6 +1,14 @@
 import React, { useState } from "react";
-import { Button, Grid } from "@material-ui/core";
-import { getTasks } from '../state/actions/actions';
+import {
+  Button,
+  Grid,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Divider,
+} from "@material-ui/core";
+import { getTasks } from "../state/actions/actions";
+import FolderIcon from "@material-ui/icons/Folder";
 
 const GetTasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -8,13 +16,13 @@ const GetTasks = () => {
   const handleGetTasks = async () => {
     let tasks = await getTasks();
     setTasks(tasks);
-  }
+  };
 
   return (
     <Grid
       justify="center"
       alignItems="center"
-      direction="row"
+      direction="column"
       container
       style={{ margin: 16 }}
     >
@@ -22,16 +30,21 @@ const GetTasks = () => {
         <Button variant="contained" color="primary" onClick={handleGetTasks}>
           Get Tasks
         </Button>
-        {tasks.length > 0 &&
-        tasks.map(task => (
-          <Grid item key={task.id}>
-            {task.title}
-          </Grid>
-        ))
-        }
       </Grid>
+      {tasks.length > 0 &&
+        tasks.map((task) => (
+          <Grid item key={task.id} direction="row">
+            <ListItem>
+              <ListItemIcon>
+                <FolderIcon />
+              </ListItemIcon>
+              <ListItemText primary={task.title} secondary={task.description} />
+            </ListItem>
+            <Divider />
+          </Grid>
+        ))}
     </Grid>
   );
-}
+};
 
 export default GetTasks;
